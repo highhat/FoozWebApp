@@ -1,0 +1,22 @@
+{
+  "name": "FoozWebApp",
+  "version": "1.0.0",
+  "description": "Node.js app that distributes and controls Apple Wallet passes from the Foozlander Salesforce application.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/highhat/FoozWebApp.git"
+  },
+  "author": "dentremont@deloitte.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/highhat/FoozWebApp/issues"
+  },
+  "homepage": "https://github.com/highhat/FoozWebApp",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}

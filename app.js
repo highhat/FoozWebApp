@@ -2,6 +2,7 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var router = express.Router();
 
 // Initialize app
 var app = express();
@@ -13,6 +14,10 @@ app.set('port', (process.env.PORT || 5000));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+router.get('/', function(req, res) {
+	res.send('Get your Foozalnder pass');
+});
 
 // Run app
 app.listen(app.get('port'), function() {

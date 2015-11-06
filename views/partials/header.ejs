@@ -48,3 +48,9 @@
 </style>
 
 	<body>
+		<header>
+			<%if (user.isAuthenticated) { %>
+				<a href="/player">My Stats</a> | <a href="/logout">Logout</a>
+			<% } %>
+			
+		</header>

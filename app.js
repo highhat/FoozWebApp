@@ -2,10 +2,13 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var nForce = require('nforce');
+var session = require('express-session');
 
 // Import routes
 var home = require('./routes/home');
-//var user = require('./routes/user');
+var user = require('./routes/user');
+var passbook = require('./routes/passbook');
 
 // Initialize app
 var app = express();
@@ -21,15 +24,33 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Define routes
-app.use('/', home); // index
-//app.use('/player', user); // protected user area
-
 // Non defined routes
 app.use(function(req, res, next) {
-    err.status = 404;
-    next(err);
+    next();
 });
+
+app.use(session({
+  secret: 'foozPassTest',
+  resave: false,
+  saveUninitialized: true,
+}));
+
+app.use(function (req, res, next) {
+	if(req.session.user === undefined) {
+		req.session.user = {
+			isAuthenticated: false
+		}
+	} else {
+
+	}
+
+	next();
+});
+
+// Define routes
+app.use('/', home); // index
+app.use('/player', user); // protected user area
+app.use('/passbook', passbook); 
 
 // Run app
 app.listen(app.get('port'), function() {

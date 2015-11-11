@@ -26,6 +26,7 @@
     "express-session": "^1.12.1",
     "fs": "0.0.2",
     "mongodb": "^2.0.47",
+    "mongoose": "^4.2.5",
     "monk": "^1.0.1",
     "nforce": "^1.2.3"
   }

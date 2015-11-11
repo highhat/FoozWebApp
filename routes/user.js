@@ -6,6 +6,7 @@ var nForce = require('nforce');
 router.get('/', isAuthenticated, function(req, res) {
 	// Add user detail to output
 	output.user = req.session.user;
+	console.log(req.session);
 
 	res.render('pages/user', output);
 });
@@ -28,6 +29,9 @@ var output = {
 	},
 	data: {
 		message: '',
+		games: [],
+		score: 23,
+		rank: 1
 	},
 	user: {
 		isAuthenticated: false,

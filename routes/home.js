@@ -94,7 +94,6 @@ var dbLoginUser = function(auth, cb) {
 	var users = db.get('game_stats');
 	console.log(db);
 	users.find({ userId: auth.identity.user_id }, function (err, docs) {
-		if(err) console.log(err);
 		var user;
 
 		if(docs === undefined || docs.length == 0) {
@@ -139,7 +138,8 @@ var generateNewUser = function(identity) {
 		userId: identity.user_id,
 		email: identity.email,
 		name: identity.display_name,
-		avatar: identity.photos.thumbnail
+		avatar: identity.photos.thumbnail,
+		score: 98
 	}
 }
 

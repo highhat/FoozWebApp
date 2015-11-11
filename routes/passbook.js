@@ -13,6 +13,7 @@ var template = passbook('generic', {
     labelColor: "rgb(45, 54, 129)",
 	keys: '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/keys',
 	formatVersion: 1,
+	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update'
 	generic: {
 		primaryFields: [
 			{
@@ -34,7 +35,7 @@ var template = passbook('generic', {
 router.get('/download', isAuthenticated, function(req, res) {
 	// Create new pass from template
 	var pass = template.createPass({
-		serialNumber:  'pass.com.foozlander.scorecard:' + req.session.user.userId,
+		serialNumber:  req.session.user.userId,
 		description: 'Your Foozlander Score'
 	});
 	console.log(pass);

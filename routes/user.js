@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var nForce = require('nforce');
 
 // Load page for login
 router.get('/', isAuthenticated, function(req, res) {

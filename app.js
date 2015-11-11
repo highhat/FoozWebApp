@@ -2,7 +2,6 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var nForce = require('nforce');
 var session = require('express-session');
 
 // Import routes

@@ -3,9 +3,7 @@ var express = require('express'),
 	passbook = require('node-passbook'),
 	path = require('path'),
 	fs = require('fs');
-var appDir = path.dirname(require.main.filename);
-console.log(appDir);
-var libPath = appDir + '/lib/passbook';
+var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 
 // Define pass
 var template = passbook('generic', {
@@ -47,10 +45,10 @@ router.get('/download', isAuthenticated, function(req, res) {
 		description: 'Your Foozlander Score'
 	});
 	console.log(pass);
-	pass.structure.primaryFields[0].value = user.score;
-
-	pass.images.icon = libPath + '/images/icon.png';
-	pass.images.logo = libPath + '/images/icon.png';
+	//pass.structure.primaryFields[0].value = user.score;
+	pass.loadImagesFrom(libPath + '/images/');
+	//pass.images.icon = libPath + '/images/icon.png';
+	//pass.images.logo = libPath + '/images/icon.png';
 
 	pass.render(res, function(error) {
 		if (error) {

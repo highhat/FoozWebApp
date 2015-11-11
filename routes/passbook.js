@@ -66,6 +66,14 @@ router.get('/download', isAuthenticated, function(req, res) {
 });
 
 router.get('/update', function(req, res) {
+	console.log('Register Requested (GET)');
+	console.log(req);
+	res.send('{}');
+});
+
+router.post('/update', function(req, res) {
+	console.log('Register Requested (POST)');
+	console.log(req);
 	res.send('{}');
 })
 

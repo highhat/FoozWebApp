@@ -13,7 +13,7 @@ var template = passbook('generic', {
     labelColor: "rgb(45, 54, 129)",
 	keys: '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/keys',
 	formatVersion: 1,
-	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update'
+	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update',
 	generic: {
 		primaryFields: [
 			{

@@ -1,26 +1,28 @@
 var express = require('express');
 var router = express.Router();
-var mongo = require('mongodb');
-var mongoose = require('mongoose');
 var User = require('../models/User');
- 
-var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://fooz_prvt:1400market@ds049754.mongolab.com:49754/heroku_1vjw0wrr'; 
-mongoose.connect(mongoUri);
+var Game = require('../models/Game');
 
-// Load page for login
-router.post('/user/:id/update', function(req, res) {
+router.post('/user/:id/update', isAuthenticated, function(req, res) {
 	var score = req.body.score;
+	var userId = req.params.id;
 
-	// Update user
-	User.update({ 'userId': req.params.id }, { 'score': score }, function (err, docs) {
+	// Update user score
+	User.updateScore(userId, score, function(err, result) {
 		if(!err) {
-			// Update user
-			res.send(err);
+			res.send('Complete');
 		} else {
-			res.send('Updated: ' + req.params.id + ' to score: ' + score);
+			res.send('Failed: ' + err);
 		}
 	});
 });
 
+router.post('/game/add', isAuthenticated, function(req, res) {
+	res.send('Under Construction');
+});
+
+function isAuthenticated() {
+	return true;
+}
 
 module.exports = router;

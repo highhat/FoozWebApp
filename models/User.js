@@ -48,7 +48,15 @@ User.createNewUser = function(identity, callback) {
 }
 
 User.updateScore = function(userId, score, callback) {
-
+	// Update user
+	User.update({ 'user_id': userId }, { 'score': score }, function (err, docs) {
+		if(!err) {
+			// Complete
+			callback(null, User);
+		} else {
+			callback(err, {});
+		}
+	});
 }
 
 module.exports = User;

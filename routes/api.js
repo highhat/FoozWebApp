@@ -19,7 +19,7 @@ var User = mongoose.model('game_stats', userSchema);
 
 // Load page for login
 router.post('/user/:id/update', function(req, res) {
-	var score = JSON.stringify(req.body);
+	var score = parseInt(req.body);
 
 	// Update user
 	User.update({ 'userId': req.params.id }, { 'score': score }, function (err, docs) {

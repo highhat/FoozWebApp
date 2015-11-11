@@ -1,6 +1,10 @@
 var express = require('express'),
 	router = express.Router(),
-	passbook = require('node-passbook');
+	passbook = require('node-passbook'),
+	path = require('path'),
+	fs = require('fs');
+//'/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/keys',
+var libPath = fs.realpathSync('./lib/passbook');
 
 // Define pass
 var template = passbook('generic', {
@@ -11,7 +15,7 @@ var template = passbook('generic', {
 	backgroundColor: 'rgb(135, 129, 189)',
 	foregroundColor: "rgb(255, 255, 255)",
     labelColor: "rgb(45, 54, 129)",
-	keys: '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/keys',
+	keys: libPath + '/keys',
 	formatVersion: 1,
 	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update',
 	generic: {
@@ -44,8 +48,8 @@ router.get('/download', isAuthenticated, function(req, res) {
 	console.log(pass);
 	pass.structure.primaryFields[0].value = user.score;
 
-	pass.images.icon = '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/images/icon.png';
-	pass.images.logo = '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/images/icon.png';
+	pass.images.icon = libPath + '/images/icon.png';
+	pass.images.logo = libPath + '/images/icon.png';
 
 	pass.render(res, function(error) {
 		if (error) {

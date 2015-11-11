@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var User = require('../models/User');
-var Game = require('../models/Game');
+var express = require('express'),
+	router = express.Router(),
+	User = require('../models/User'),
+	Game = require('../models/Game'),
+	apns = require('../lib/apns');
 
 router.post('/user/:id/update', isAuthenticated, function(req, res) {
 	var score = req.body.score;
@@ -19,6 +20,11 @@ router.post('/user/:id/update', isAuthenticated, function(req, res) {
 
 router.post('/game/add', isAuthenticated, function(req, res) {
 	res.send('Under Construction');
+});
+
+router.post('/device/register', function(req, res) {
+	console.log(req);
+	res.send(200);
 });
 
 function isAuthenticated() {

@@ -1,6 +1,6 @@
-var express = require('express');
-var router = express.Router();
-var passbook = require('node-passbook');
+var express = require('express'),
+	router = express.Router(),
+	passbook = require('node-passbook');
 
 // Define pass
 var template = passbook('generic', {
@@ -33,13 +33,16 @@ var template = passbook('generic', {
 });
 
 router.get('/download', isAuthenticated, function(req, res) {
+	// Extract use
+	var user = req.session.user.detail;
+
 	// Create new pass from template
 	var pass = template.createPass({
-		serialNumber:  req.session.user.userId,
+		serialNumber:  user.user_id,
 		description: 'Your Foozlander Score'
 	});
 	console.log(pass);
-	pass.structure.primaryFields[0].value = 25;
+	pass.structure.primaryFields[0].value = user.score;
 
 	pass.images.icon = '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/images/icon.png';
 	pass.images.logo = '/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/images/icon.png';

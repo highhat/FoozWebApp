@@ -7,10 +7,11 @@ var monk = require('monk');
 var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://fooz_prvt:1400market@ds049754.mongolab.com:49754/heroku_1vjw0wrr'; 
 var db = monk(mongoUri);
 
+var authCallback = process.env.APP_CALLBACK || 'http://localhost:5000/_callback';
 var org = nForce.createConnection({
 	clientId: '3MVG9KI2HHAq33RzooRMk3ptnGF4M7i0avQiHMlb36YRC3RXt61mta0RiHahcw8agz80EcX5jIM0brMQSgH6b',
 	clientSecret: '8034561791977016157',
-	redirectUri: 'http://localhost:5000/_callback',
+	redirectUri: authCallback,
 	apiVersion: 'v27.0',  // optional, defaults to current salesforce API version
 	environment: 'production',  // optional, salesforce 'sandbox' or 'production', production default
 	mode: 'multi' // optional, 'single' or 'multi' user mode, multi default

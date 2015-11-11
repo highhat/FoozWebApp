@@ -49,8 +49,8 @@ router.get('/download', isAuthenticated, function(req, res) {
 		description: 'Your Foozlander Score',
 		authenticationToken: authToken
 	});
-	console.log(pass);
-	//pass.structure.primaryFields[0].value = user.score;
+
+	pass.structure.primaryFields[0].value = user.score;
 	pass.loadImagesFrom(libPath + '/images/');
 
 	Pass.registerPass(user.user_id, serialNumber, authToken);
@@ -68,13 +68,13 @@ router.get('/download', isAuthenticated, function(req, res) {
 router.get('/update', function(req, res) {
 	console.log('Register Requested (GET)');
 	console.log(req);
-	res.send('{}');
+	res.send(200);
 });
 
 router.post('/update', function(req, res) {
 	console.log('Register Requested (POST)');
 	console.log(req);
-	res.send('{}');
+	res.send(200);
 })
 
 function isAuthenticated(req, res, next) {

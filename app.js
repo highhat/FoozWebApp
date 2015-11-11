@@ -9,6 +9,7 @@ var session = require('express-session');
 var home = require('./routes/home');
 var user = require('./routes/user');
 var passbook = require('./routes/passbook');
+var api = require('./routes/api');
 
 // Initialize app
 var app = express();
@@ -51,6 +52,8 @@ app.use(function (req, res, next) {
 app.use('/', home); // index
 app.use('/player', user); // protected user area
 app.use('/passbook', passbook); 
+app.use('/api', api); 
+
 
 // Run app
 app.listen(app.get('port'), function() {

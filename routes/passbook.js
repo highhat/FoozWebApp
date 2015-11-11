@@ -3,8 +3,9 @@ var express = require('express'),
 	passbook = require('node-passbook'),
 	path = require('path'),
 	fs = require('fs');
-//'/Users/dentremont/Projects/Fooz/FoozWebApp/lib/passbook/keys',
-var libPath = fs.realpathSync('./lib/passbook');
+var appDir = path.dirname(require.main.filename);
+console.log(appDir);
+var libPath = appDir + '/lib/passbook';
 
 // Define pass
 var template = passbook('generic', {

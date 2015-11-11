@@ -22,7 +22,7 @@ router.post('/user/:id/update', function(req, res) {
 	var score = req.body;
 
 	// Update user
-	User.update({ 'userId': req.params.id }, { 'score': score }, function (err, docs) {
+	User.update({ 'userId': req.params.id }, { 'score': 45 }, function (err, docs) {
 		if(!err) {
 			// Update user
 			res.send(err);

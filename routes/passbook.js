@@ -2,7 +2,9 @@ var express = require('express'),
 	router = express.Router(),
 	passbook = require('node-passbook'),
 	path = require('path'),
-	fs = require('fs');
+	fs = require('fs'),
+	Utils = require('../lib/Utils'),
+	Pass = require('../models/Pass');
 var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 
 // Define pass
@@ -16,6 +18,7 @@ var template = passbook('generic', {
     labelColor: "rgb(45, 54, 129)",
 	keys: libPath + '/keys',
 	formatVersion: 1,
+	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update',
 	generic: {
 		primaryFields: [
 			{
@@ -37,20 +40,27 @@ var template = passbook('generic', {
 router.get('/download', isAuthenticated, function(req, res) {
 	// Extract use
 	var user = req.session.user.detail;
+	var serialNumber = user.user_id;
+	var authToken = Utils.generateToken(serialNumber);
 
 	// Create new pass from template
 	var pass = template.createPass({
-		serialNumber:  user.user_id,
-		description: 'Your Foozlander Score'
+		serialNumber:  serialNumber,
+		description: 'Your Foozlander Score',
+		authenticationToken: authToken
 	});
 	console.log(pass);
 	//pass.structure.primaryFields[0].value = user.score;
 	pass.loadImagesFrom(libPath + '/images/');
 
+	Pass.registerPass(user.user_id, serialNumber, authToken);
+
 	pass.render(res, function(error) {
-		if (error) {
+		if(error) {
 			console.log(error);
 			process.exit(1);
+		} else {
+			
 		}
 	});
 });

@@ -27,7 +27,7 @@ router.post('/user/:id/update', function(req, res) {
 			// Update user
 			res.send(err);
 		} else {
-			res.send(true);
+			res.send('Updated: ' + req.params.id + ' to score: ' + score);
 		}
 	});
 });

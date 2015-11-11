@@ -16,7 +16,6 @@ var template = passbook('generic', {
     labelColor: "rgb(45, 54, 129)",
 	keys: libPath + '/keys',
 	formatVersion: 1,
-	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update',
 	generic: {
 		primaryFields: [
 			{
@@ -47,8 +46,6 @@ router.get('/download', isAuthenticated, function(req, res) {
 	console.log(pass);
 	//pass.structure.primaryFields[0].value = user.score;
 	pass.loadImagesFrom(libPath + '/images/');
-	//pass.images.icon = libPath + '/images/icon.png';
-	//pass.images.logo = libPath + '/images/icon.png';
 
 	pass.render(res, function(error) {
 		if (error) {

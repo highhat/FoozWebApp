@@ -35,7 +35,9 @@ Pass.registerDevice = function(authToken, deviceId, pushToken, callback) {
 			result.device_id = deviceId;
 			result.push_token = pushToken;
 
+			console.log('Will update');
 			result.save(function(err) {
+				console.log('Did update');
 				if(!err) {
 					callback(null, result);
 				} else {

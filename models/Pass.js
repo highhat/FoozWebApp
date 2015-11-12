@@ -26,6 +26,26 @@ Pass.registerPass = function(userId, serialNumber, authToken) {
 	})
 }
 
-Pass.registerDevice = function(serialNumbler, )
+Pass.registerDevice = function(authToken, deviceId, pushToken, callback) {
+	// Look for pass
+	Pass.findOne({ 'pass_id': authToken }, function(err, result) {
+		console.log('Found pass: ' + result);
+		if(!err) {
+			// Update device object
+			result.device_id = deviceId;
+			result.push_token = pushToken;
+
+			result.save(function(err) {
+				if(!err) {
+					callback(null, result);
+				} else {
+					callback(err, {});
+				}
+			})
+		} else {
+			callback(err, {});
+		}
+	})
+}
 
 module.exports = Pass;

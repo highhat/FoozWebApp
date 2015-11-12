@@ -86,6 +86,7 @@ router.post('/update/*', function(req, res) {
 	if(opType == 'registrations') {
 		// Register device
 		Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {
+			console.log(err, result);
 			res.send(200);
 		});
 	} else {

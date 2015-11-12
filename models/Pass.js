@@ -30,7 +30,7 @@ Pass.registerDevice = function(authToken, deviceId, pushToken, callback) {
 	// Look for pass
 	Pass.findOne({ 'pass_id': authToken }, function(err, result) {
 		console.log('Found pass: ' + result);
-		if(!err || result == null) {
+		if(!err || result != null) {
 			// Update device object
 			result.device_id = deviceId;
 			result.push_token = pushToken;

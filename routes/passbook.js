@@ -15,7 +15,7 @@ var template = passbook('generic', {
 	teamIdentifier: '2LN7W9S7LU',
 	backgroundColor: 'rgb(39, 40, 34)',
 	foregroundColor: "rgb(255, 255, 255)",
-    labelColor: "rgb(45, 54, 129)",
+    labelColor: "rgb(255, 255, 255)",
 	keys: libPath + '/keys',
 	formatVersion: 1,
 	webServiceURL: 'https://foozlander-dev.herokuapp.com/passbook/update',
@@ -73,7 +73,7 @@ router.post('/update/v1/*', function(req, res) {
 	// Get URL pieces
 	// /passbook/update/v1/devices/7031ad705317095e9a01d2bcb7f3dd5c/registrations/pass.com.foozlander.scorecard/00561000000aK64AAE
 	console.log('Auth: ' + req.get('Authorization'));
-	consol.log('Token: ' + req.body.pushToken);
+	console.log('Token: ' + req.body.pushToken);
 
 	res.send(200);
 	var segs = req.path.split('/');

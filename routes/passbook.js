@@ -84,13 +84,19 @@ router.get('/updatetest', function(req, res) {
 	pass.loadImagesFrom(libPath + '/images/');
 	pass.structure.primaryFields[0].value = 900;
 
-	tempararyPass('temp', pass, function(err, result) {
-		if(!err) {
-			res.send(result);
-		} else {
-			res.send(501);
-		}
-	});	
+	var dir = path.dirname(require.main.filename) + '/tmp/temppass.pkpass';
+	var file = fs.createWriteStream(dir);
+	pass.on('error', function(error) {
+	  	console.error(error);
+	  	res.send('fail');
+	});
+	pass.on('end', function(err, result) {
+		// Get file
+		fs.readFile(dir, function (err, data) {
+			res.send(data);
+		});
+	});
+	pass.pipe(file);
 });
 
 function tempararyPass(name, pass, callback) {

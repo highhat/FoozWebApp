@@ -66,20 +66,20 @@ router.get('/download', isAuthenticated, function(req, res) {
 	});
 });
 // /update/v1/passes/pass.com.foozlander.scorecard/:serialNumber
-router.get('/updatetest', function(req, res) {
+router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
 	// Get update
-	// var sn = req.params.serialNumber;
-	// var authToken = req.get('Authorization');
-	// authToken = authToken.split('ApplePass ')[1];
+	var sn = req.params.serialNumber;
+	var authToken = req.get('Authorization');
+	authToken = authToken.split('ApplePass ')[1];
 
-	// console.log('Get update for: ' + sn);
-	// console.log('Auth: ' + authToken);
+	console.log('Get update for: ' + sn);
+	console.log('Auth: ' + authToken);
 
 	// Create new pass from template
 	var pass = template.createPass({
-		serialNumber:  '000',
+		serialNumber:  sn,
 		description: 'Foozlander',
-		authenticationToken: '13'
+		authenticationToken: authToken
 	});
 	pass.loadImagesFrom(libPath + '/images/');
 	pass.structure.primaryFields[0].value = 900;

@@ -74,7 +74,8 @@ router.get('/update/*', function(req, res) {
 router.post('/update/*', function(req, res) {
 	// Get URL pieces
 	// /passbook/update/v1/devices/7031ad705317095e9a01d2bcb7f3dd5c/registrations/pass.com.foozlander.scorecard/00561000000aK64AAE
-	console.log(req.body, req.headers, req.header);
+	console.log('Auth: ' + req.get('Authorization'));
+	consol.log('Token: ' + req.body.pushToken);
 	var segs = req.path.split('/');
 	var serialNumber = segs[segs.length - 1];
 	var opType = segs[segs.length - 3];

@@ -65,16 +65,22 @@ router.get('/download', isAuthenticated, function(req, res) {
 	});
 });
 
-router.get('/update/*', function(req, res) {
+router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
+	// Get update
+	var serialNumber = req.params.serialNumber;
+	var authToken = req.get('Authorization');
+	authToken = authToken.split('ApplePass ')[1];
+
+	console.log('Get update for: ' + serialNumber);
+	console.log('Auth: ' + authToken);
+
 	res.send(200);
 });
 
-router.post('/update/v1/*', function(req, res) {
+router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
 	// Get URL pieces
-	var segs = req.path.split('/');
-	var serialNumber = segs[segs.length - 1];
-	var opType = segs[segs.length - 3];
-	var deviceId = segs[segs.length - 4];
+	var serialNumber = req.params.serialNumber;
+	var deviceId = req.params.deviceId;
 	var authToken = req.get('Authorization');
 	authToken = authToken.split('ApplePass ')[1];
 	var pushToken = req.body.pushToken;
@@ -84,19 +90,14 @@ router.post('/update/v1/*', function(req, res) {
 	console.log('AuthToken: ' + authToken);
 	console.log('PushToken: ' + pushToken);
 
-	if(opType == 'registrations') {
-		// Register device
-		Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {
-			//console.log(err, result);
-			if(!err) {
-				res.send(200);
-			} else {
-				res.send(501);
-			}
-		});
-	} else {
-		res.send(404);
-	}
+	Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {
+		//console.log(err, result);
+		if(!err) {
+			res.send(200);
+		} else {
+			res.send(501);
+		}
+	});
 
 	
 })

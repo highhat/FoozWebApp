@@ -4,6 +4,7 @@ var express = require('express'),
 	path = require('path'),
 	fs = require('fs'),
 	Utils = require('../lib/Utils'),
+	User = require('../models/User'),
 	Pass = require('../models/Pass');
 var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 

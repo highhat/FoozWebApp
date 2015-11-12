@@ -11,7 +11,7 @@ var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 var template = passbook('generic', {
 	passTypeIdentifier: 'pass.com.foozlander.scorecard',
 	organizationName: 'FoozLander',
-	logoText: 'Project Foozlander',
+	logoText: 'Foozlander',
 	teamIdentifier: '2LN7W9S7LU',
 	backgroundColor: 'rgb(39, 40, 34)',
 	foregroundColor: "rgb(255, 255, 255)",
@@ -22,16 +22,16 @@ var template = passbook('generic', {
 	generic: {
 		primaryFields: [
 			{
-				key: 'currentScore',
-				label: 'Score',
-				value: 0
-			}
-		],
-		secondaryFields: [
-			{
 				key: 'lastGameDateTime',
 				label: 'Last Game',
 				value: 'November 10, 2015'
+			}
+		],
+		headerFields: [
+			{
+				key: 'currentScore',
+				label: 'Points',
+				value: 0
 			}
 		]
 	}
@@ -50,7 +50,7 @@ router.get('/download', isAuthenticated, function(req, res) {
 		authenticationToken: authToken
 	});
 
-	pass.structure.primaryFields[0].value = user.score;
+	pass.structure.headerFields[0].value = user.score;
 	pass.loadImagesFrom(libPath + '/images/');
 
 	Pass.registerPass(user.user_id, serialNumber, authToken);
@@ -71,26 +71,40 @@ router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', func
 	var authToken = req.get('Authorization');
 	authToken = authToken.split('ApplePass ')[1];
 
-	console.log('Get update for: ' + sn);
-	console.log('Auth: ' + authToken);
-
-	// Create new pass from template
-	var pass = template.createPass({
-		serialNumber:  sn,
-		description: 'Foozlander',
-		authenticationToken: authToken
-	});
-	pass.loadImagesFrom(libPath + '/images/');
-	pass.structure.primaryFields[0].value = 900;
-
-	createTempararyPass(name, pass, function(err, result) {
+	Pass.validate(sn, authToken, function(err, userId) {
 		if(!err) {
-			res.send(result);
+			updatePassScore(sn, authToken, userId, res);
+		} else {
+			res.send(401);
+		}
+	});	
+});
+
+function updatePassScore(sn, authToken, userId, res) {
+	User.getUserRecord(userId, function(err, result) {
+		if(!err) {
+			// Create pass update
+			// Create new pass from template
+			var pass = template.createPass({
+				serialNumber:  sn,
+				description: 'Foozlander',
+				authenticationToken: authToken
+			});
+			pass.loadImagesFrom(libPath + '/images/');
+			pass.structure.headerFields[0].value = result.score;
+
+			createTempararyPass(name, pass, function(err, result) {
+				if(!err) {
+					res.send(result);
+				} else {
+					res.send(501);
+				}
+			});
 		} else {
 			res.send(501);
 		}
 	});
-});
+}
 
 function createTempararyPass(name, pass, callback) {
 	var dir = path.dirname(require.main.filename) + '/tmp/temppass-' + name + '.pkpass';
@@ -118,11 +132,6 @@ router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scor
 	var authToken = req.get('Authorization');
 	authToken = authToken.split('ApplePass ')[1];
 	var pushToken = req.body.pushToken;
-
-	console.log('Serial: ' + serialNumber);
-	console.log('DeviceId: ' + deviceId);
-	console.log('AuthToken: ' + authToken);
-	console.log('PushToken: ' + pushToken);
 
 	Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {
 		//console.log(err, result);

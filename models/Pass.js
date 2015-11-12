@@ -26,6 +26,17 @@ Pass.registerPass = function(userId, serialNumber, authToken) {
 	})
 }
 
+Pass.validate = function(serialNumber, authToken, callback) {
+	// Look for pass
+	Pass.findOne({ 'pass_id': authToken, 'serial_number': serialNumber }, function(err, result) {
+		if(!err || result != null) {
+			callback(null, result.user_id);
+		} else {
+			callback(err, null);
+		}
+	})
+}
+
 Pass.registerDevice = function(authToken, deviceId, pushToken, callback) {
 	// Look for pass
 	Pass.findOne({ 'pass_id': authToken }, function(err, result) {

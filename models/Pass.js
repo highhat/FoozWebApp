@@ -3,7 +3,9 @@ var mongoose = require('../lib/Db');
 var passSchema = new mongoose.Schema({
 	pass_id: String,
 	serial_number: String,
-	user_id: String
+	user_id: String,
+	device_id: String,
+	push_token: String
 });
 
 var Pass = mongoose.model('apn_passes', passSchema);
@@ -13,7 +15,7 @@ Pass.registerPass = function(userId, serialNumber, authToken) {
 	var newPass = new Pass({
 		pass_id: authToken,
 		serial_number: serialNumber,
-		user_id: userId
+		user_id: userId,
 	});
 
 	// Save pass
@@ -23,5 +25,7 @@ Pass.registerPass = function(userId, serialNumber, authToken) {
 		}
 	})
 }
+
+Pass.registerDevice = function(serialNumbler, )
 
 module.exports = Pass;

@@ -94,7 +94,7 @@ function updatePassScore(sn, authToken, userId, res) {
 			pass.loadImagesFrom(libPath + '/images/');
 			pass.structure.headerFields[0].value = result.score;
 
-			createTempararyPass(name, pass, function(err, result) {
+			createTempararyPass(sn, pass, function(err, result) {
 				if(!err) {
 					res.send(result);
 				} else {

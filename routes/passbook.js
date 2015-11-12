@@ -4,6 +4,7 @@ var express = require('express'),
 	path = require('path'),
 	fs = require('fs'),
 	Utils = require('../lib/Utils'),
+	temp = require('temp'),
 	Pass = require('../models/Pass');
 var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 
@@ -64,27 +65,54 @@ router.get('/download', isAuthenticated, function(req, res) {
 		}
 	});
 });
-
-router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
+// /update/v1/passes/pass.com.foozlander.scorecard/:serialNumber
+router.get('/updatetest', function(req, res) {
 	// Get update
-	var sn = req.params.serialNumber;
-	var authToken = req.get('Authorization');
-	authToken = authToken.split('ApplePass ')[1];
+	// var sn = req.params.serialNumber;
+	// var authToken = req.get('Authorization');
+	// authToken = authToken.split('ApplePass ')[1];
 
-	console.log('Get update for: ' + sn);
-	console.log('Auth: ' + authToken);
+	// console.log('Get update for: ' + sn);
+	// console.log('Auth: ' + authToken);
 
 	// Create new pass from template
 	var pass = template.createPass({
-		serialNumber:  sn,
+		serialNumber:  '000',
 		description: 'Foozlander',
-		authenticationToken: authToken
+		authenticationToken: '13'
 	});
-
+	pass.loadImagesFrom(libPath + '/images/');
 	pass.structure.primaryFields[0].value = 900;
 
-	res.status(200).json(pass);
+	tempararyPass('temp', pass, function(err, result) {
+		if(!err) {
+			res.send(result);
+		} else {
+			res.send(501);
+		}
+	});	
 });
+
+function tempararyPass(name, pass, callback) {
+	// Automatically track and cleanup files at exit
+	temp.track();
+
+	temp.mkdir('passupdates', function(err, dirPath) {
+		var inputPath = path.join(dirPath, name + '.pkpass');
+		var file = fs.createWriteStream(inputPath);
+		pass.on('error', function(error) {
+			console.error(error);
+			callback(error, {});
+		});
+		pass.on('end', function(err, res) {
+			// Get file
+			console.log(err, res);
+			callback(null, res);
+		});
+
+		pass.pipe(file);
+	});
+}
 
 router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
 	// Get URL pieces

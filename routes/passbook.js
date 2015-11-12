@@ -13,7 +13,7 @@ var template = passbook('generic', {
 	organizationName: 'FoozLander',
 	logoText: 'Project Foozlander',
 	teamIdentifier: '2LN7W9S7LU',
-	backgroundColor: 'rgb(135, 129, 189)',
+	backgroundColor: 'rgb(39, 40, 34)',
 	foregroundColor: "rgb(255, 255, 255)",
     labelColor: "rgb(45, 54, 129)",
 	keys: libPath + '/keys',

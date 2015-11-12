@@ -67,26 +67,23 @@ router.get('/download', isAuthenticated, function(req, res) {
 
 router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
 	// Get update
-	var serialNumber = req.params.serialNumber;
+	var sn = req.params.serialNumber;
 	var authToken = req.get('Authorization');
 	authToken = authToken.split('ApplePass ')[1];
 
-	console.log('Get update for: ' + serialNumber);
+	console.log('Get update for: ' + sn);
 	console.log('Auth: ' + authToken);
 
-	var passUpdate = {
-		generic: {
-			primaryFields: [
-			{
-				key: 'currentScore',
-				label: 'Score',
-				value: 900
-			}
-		],
-		}
-	};
+	// Create new pass from template
+	var pass = template.createPass({
+		serialNumber:  sn,
+		description: 'Foozlander',
+		authenticationToken: authToken
+	});
 
-	res.status(200).json(passUpdate);
+	pass.structure.primaryFields[0].value = 900;
+
+	res.status(200).json(pass);
 });
 
 router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {

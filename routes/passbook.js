@@ -80,13 +80,15 @@ router.post('/update/v1/*', function(req, res) {
 	var serialNumber = segs[segs.length - 1];
 	var opType = segs[segs.length - 3];
 	var deviceId = segs[segs.length - 4];
-	//var authToken = req.get('Authorization').split(' ')[1];
-	var pushToken = req.body.token || req.body.pushToken;
+	var authToken = req.get('Authorization');
+	authToken = authToken.split('ApplePass ')[1];
+	var pushToken = req.body.pushToken;
 
-	//console.log(serialNumber, opType, deviceId, authToken, pushToken);
+	console.log('Serial: ' + serialNumber);
+	console.log('DeviceId: ' + deviceId);
+	console.log('AuthToken: ' + authToken);
+	console.log('PushToken: ' + pushToken);
 
-	res.send(200);
-	return;
 	if(opType == 'registrations') {
 		// Register device
 		Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {

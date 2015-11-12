@@ -66,16 +66,16 @@ router.get('/download', isAuthenticated, function(req, res) {
 });
 
 router.get('/update/*', function(req, res) {
-	console.log('Register Requested (GET)');
-	console.log(req);
 	res.send(200);
 });
 
-router.post('/update/*', function(req, res) {
+router.post('/update/v1/*', function(req, res) {
 	// Get URL pieces
 	// /passbook/update/v1/devices/7031ad705317095e9a01d2bcb7f3dd5c/registrations/pass.com.foozlander.scorecard/00561000000aK64AAE
 	console.log('Auth: ' + req.get('Authorization'));
 	consol.log('Token: ' + req.body.pushToken);
+
+	res.send(200);
 	var segs = req.path.split('/');
 	var serialNumber = segs[segs.length - 1];
 	var opType = segs[segs.length - 3];
@@ -83,14 +83,14 @@ router.post('/update/*', function(req, res) {
 	//var authToken = req.get('Authorization').split(' ')[1];
 	var pushToken = req.body.token || req.body.pushToken;
 
-	console.log(serialNumber, opType, deviceId, authToken, pushToken);
+	//console.log(serialNumber, opType, deviceId, authToken, pushToken);
 
 	res.send(200);
 	return;
 	if(opType == 'registrations') {
 		// Register device
 		Pass.registerDevice(authToken, deviceId, pushToken, function(err, result) {
-			console.log(err, result);
+			//console.log(err, result);
 			res.send(200);
 		});
 	} else {

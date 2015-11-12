@@ -74,7 +74,19 @@ router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', func
 	console.log('Get update for: ' + serialNumber);
 	console.log('Auth: ' + authToken);
 
-	res.send(200);
+	var passUpdate = {
+		generic: {
+			primaryFields: [
+			{
+				key: 'currentScore',
+				label: 'Score',
+				value: 900
+			}
+		],
+		}
+	};
+
+	res.status(200).json(passUpdate);
 });
 
 router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {

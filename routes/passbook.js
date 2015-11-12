@@ -4,7 +4,6 @@ var express = require('express'),
 	path = require('path'),
 	fs = require('fs'),
 	Utils = require('../lib/Utils'),
-	temp = require('temp'),
 	Pass = require('../models/Pass');
 var libPath = path.dirname(require.main.filename) + '/lib/passbook';
 
@@ -65,7 +64,7 @@ router.get('/download', isAuthenticated, function(req, res) {
 		}
 	});
 });
-// /update/v1/passes/pass.com.foozlander.scorecard/:serialNumber
+
 router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {
 	// Get update
 	var sn = req.params.serialNumber;
@@ -84,40 +83,32 @@ router.get('/update/v1/passes/pass.com.foozlander.scorecard/:serialNumber', func
 	pass.loadImagesFrom(libPath + '/images/');
 	pass.structure.primaryFields[0].value = 900;
 
-	var dir = path.dirname(require.main.filename) + '/tmp/temppass.pkpass';
+	createTempararyPass(name, pass, function(err, result) {
+		if(!err) {
+			res.send(result);
+		} else {
+			res.send(501);
+		}
+	});
+});
+
+function createTempararyPass(name, pass, callback) {
+	var dir = path.dirname(require.main.filename) + '/tmp/temppass-' + name + '.pkpass';
 	var file = fs.createWriteStream(dir);
 	pass.on('error', function(error) {
-	  	console.error(error);
-	  	res.send('fail');
+	  	callback(err, {});
 	});
 	pass.on('end', function(err, result) {
 		// Get file
 		fs.readFile(dir, function (err, data) {
-			res.send(data);
+			if(!err) {
+				callback(null, data);
+			} else {
+				callback(err, {});
+			}
 		});
 	});
 	pass.pipe(file);
-});
-
-function tempararyPass(name, pass, callback) {
-	// Automatically track and cleanup files at exit
-	temp.track();
-
-	temp.mkdir('passupdates', function(err, dirPath) {
-		var inputPath = path.join(dirPath, name + '.pkpass');
-		var file = fs.createWriteStream(inputPath);
-		pass.on('error', function(error) {
-			console.error(error);
-			callback(error, {});
-		});
-		pass.on('end', function(err, res) {
-			// Get file
-			console.log(err, res);
-			callback(null, res);
-		});
-
-		pass.pipe(file);
-	});
 }
 
 router.post('/update/v1/devices/:deviceId/registrations/pass.com.foozlander.scorecard/:serialNumber', function(req, res) {

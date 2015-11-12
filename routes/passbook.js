@@ -78,7 +78,7 @@ router.post('/update/*', function(req, res) {
 	var serialNumber = segs[segs.length - 1];
 	var opType = segs[segs.length - 3];
 	var deviceId = segs[segs.length - 4];
-	var authToken = req.get('ApplePass');
+	var authToken = req.header('Authorization').split(' ')[1];
 	var pushToken = req.body.pushToken;
 
 	console.log(serialNumber, opType, deviceId, authToken, pushToken);
